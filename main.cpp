@@ -44,17 +44,28 @@ int main() {
     //     }
     // }
 
-    // selection sort
-    for (int i = 0;i < n; i++) {
-        int minIndex = i;
-        for (int j = i + 1;j < n; j++) {
-            if (unique_numbers[j] < unique_numbers[minIndex]) {
-                minIndex = j;
-            }
+    // // selection sort
+    // for (int i = 0;i < n; i++) {
+    //     int minIndex = i;
+    //     for (int j = i + 1;j < n; j++) {
+    //         if (unique_numbers[j] < unique_numbers[minIndex]) {
+    //             minIndex = j;
+    //         }
+    //     }
+    //     int temp = unique_numbers[i];
+    //     unique_numbers[i] = unique_numbers[minIndex];
+    //     unique_numbers[minIndex] = temp;
+    // }
+
+    // insertion sort
+    for (int i = 1;i < n; i++) {
+        int j = i;
+        while (j > 0 && unique_numbers[j] < unique_numbers[j - 1]) {
+            int temp = unique_numbers[j];
+            unique_numbers[j] = unique_numbers[j - 1];
+            unique_numbers[j - 1] = temp;
+            j--;
         }
-        int temp = unique_numbers[i];
-        unique_numbers[i] = unique_numbers[minIndex];
-        unique_numbers[minIndex] = temp;
     }
 
     auto end = std::chrono::high_resolution_clock::now(); // End time
