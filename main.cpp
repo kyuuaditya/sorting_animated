@@ -8,7 +8,7 @@ int main() {
     std::mt19937 gen(rd()); // Seed the generator
     std::uniform_int_distribution<> distr(0, 1000000); // Define the range
 
-    long long int n = 1000000;
+    long long int n = 100000;
 
     std::vector<long long int> unique_numbers(n);
     for (long long int i = 0; i < n; i++) {
@@ -28,20 +28,33 @@ int main() {
     //     }
     // }
 
-    // optimized bubble sort
-    for (long long int i = 0;i < n; i++) {
-        bool isSwapped = false;
-        for (long long int j = 0;j < n - 1; j++) {
-            if (unique_numbers[j] > unique_numbers[j + 1]) {
-                long long int temp = unique_numbers[j];
-                unique_numbers[j] = unique_numbers[j + 1];
-                unique_numbers[j + 1] = temp;
-                isSwapped = true;
-            }
-            if (!isSwapped) {
-                break;
+    // // optimized bubble sort
+    // for (long long int i = 0;i < n; i++) {
+    //     bool isSwapped = false;
+    //     for (long long int j = 0;j < n - 1; j++) {
+    //         if (unique_numbers[j] > unique_numbers[j + 1]) {
+    //             long long int temp = unique_numbers[j];
+    //             unique_numbers[j] = unique_numbers[j + 1];
+    //             unique_numbers[j + 1] = temp;
+    //             isSwapped = true;
+    //         }
+    //         if (!isSwapped) {
+    //             break;
+    //         }
+    //     }
+    // }
+
+    // selection sort
+    for (int i = 0;i < n; i++) {
+        int minIndex = i;
+        for (int j = i + 1;j < n; j++) {
+            if (unique_numbers[j] < unique_numbers[minIndex]) {
+                minIndex = j;
             }
         }
+        int temp = unique_numbers[i];
+        unique_numbers[i] = unique_numbers[minIndex];
+        unique_numbers[minIndex] = temp;
     }
 
     auto end = std::chrono::high_resolution_clock::now(); // End time
