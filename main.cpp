@@ -94,6 +94,14 @@ int main() {
     // number of numbers to be sorted
     long long int n = 900;
 
+    // Load sound
+    sf::SoundBuffer buffer;
+    if (!buffer.loadFromFile("step.wav")) {
+        return -1; // error
+    }
+    sf::Sound sound;
+    sound.setBuffer(buffer);
+
     // Generate random numbers
     std::vector<long long int> unique_numbers(n);
     for (long long int i = 0; i < n; i++) {
@@ -134,6 +142,7 @@ int main() {
                     long long int temp = unique_numbers[j];
                     unique_numbers[j] = unique_numbers[j + 1];
                     unique_numbers[j + 1] = temp;
+                    sound.play(); // Play sound after each swap
                 }
             }
             count--;
