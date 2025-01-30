@@ -88,10 +88,10 @@ int main() {
     // Create a random number generator
     std::random_device rd; // Obtain a random number from hardware
     std::mt19937 gen(rd()); // Seed the generator
-    std::uniform_int_distribution<> distr(0, 1000000); // Define the range
+    std::uniform_int_distribution<> distr(0, 100); // Define the range
 
     // number of numbers to be sorted
-    long long int n = 1000000;
+    long long int n = 50;
 
     // Generate random numbers
     std::vector<long long int> unique_numbers(n);
@@ -99,19 +99,45 @@ int main() {
         unique_numbers[i] = distr(gen);
     }
 
+    // display window setup
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+    sf::RenderWindow window(sf::VideoMode(1280, 720), "Main menu", sf::Style::Default, settings);
+    // window.setFramerateLimit(1); // set frame rate limit
+    // window.setVerticalSyncEnabled(true); // enable vertical sync
+
+    int count = n;
+    while (window.isOpen() && count != 0) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        sf::sleep(sf::milliseconds(100));
+
+        window.clear();
+
+        // bubble sort
+        if (count != 0) {
+            for (long long int j = 0;j < n - 1; j++) {
+                if (unique_numbers[j] > unique_numbers[j + 1]) {
+                    long long int temp = unique_numbers[j];
+                    unique_numbers[j] = unique_numbers[j + 1];
+                    unique_numbers[j + 1] = temp;
+                }
+            }
+            count--;
+            for (long long int i = 0; i < n; i++) {
+                std::cout << unique_numbers[i] << " ";
+            }
+            std::cout << std::endl;
+        }
+    }
+
     // start the time clock
     auto start = std::chrono::high_resolution_clock::now(); // Start time
 
-    // // bubble sort
-    // for (long long int i = 0;i < n; i++) {
-    //     for (long long int j = 0;j < n - 1; j++) {
-    //         if (unique_numbers[j] > unique_numbers[j + 1]) {
-    //             long long int temp = unique_numbers[j];
-    //             unique_numbers[j] = unique_numbers[j + 1];
-    //             unique_numbers[j + 1] = temp;
-    //         }
-    //     }
-    // }
 
     // // optimized bubble sort
     // for (long long int i = 0;i < n; i++) {
