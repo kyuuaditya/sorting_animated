@@ -114,6 +114,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Main menu", sf::Style::Fullscreen, settings);
 
     int count = n;
+    int i = 0;
 
     window.clear(sf::Color::Black);
     window.display();
@@ -135,17 +136,35 @@ int main() {
 
         window.clear(sf::Color::Black);
 
-        // bubble sort
+        // // bubble sort
+        // if (count != 0) {
+        //     for (long long int j = 0;j < n - 1; j++) {
+        //         if (unique_numbers[j] > unique_numbers[j + 1]) {
+        //             long long int temp = unique_numbers[j];
+        //             unique_numbers[j] = unique_numbers[j + 1];
+        //             unique_numbers[j + 1] = temp;
+        //             sound.play(); // Play sound after each swap
+        //         }
+        //     }
+        //     count--;
+        // }
+
+        // selection sort
         if (count != 0) {
-            for (long long int j = 0;j < n - 1; j++) {
-                if (unique_numbers[j] > unique_numbers[j + 1]) {
-                    long long int temp = unique_numbers[j];
-                    unique_numbers[j] = unique_numbers[j + 1];
-                    unique_numbers[j + 1] = temp;
-                    sound.play(); // Play sound after each swap
+            // for (int i = 0;i < n; i++) {
+            i = n - count;
+            int minIndex = i;
+            for (int j = i + 1;j < n; j++) {
+                if (unique_numbers[j] < unique_numbers[minIndex]) {
+                    minIndex = j;
                 }
             }
+            int temp = unique_numbers[i];
+            unique_numbers[i] = unique_numbers[minIndex];
+            unique_numbers[minIndex] = temp;
+            // }
             count--;
+            sound.play(); // Play sound after each swap
         }
 
         // draw the rectangles
@@ -161,7 +180,6 @@ int main() {
     // start the time clock
     auto start = std::chrono::high_resolution_clock::now(); // Start time
 
-
     // // optimized bubble sort
     // for (long long int i = 0;i < n; i++) {
     //     bool isSwapped = false;
@@ -176,19 +194,6 @@ int main() {
     //             break;
     //         }
     //     }
-    // }
-
-    // // selection sort
-    // for (int i = 0;i < n; i++) {
-    //     int minIndex = i;
-    //     for (int j = i + 1;j < n; j++) {
-    //         if (unique_numbers[j] < unique_numbers[minIndex]) {
-    //             minIndex = j;
-    //         }
-    //     }
-    //     int temp = unique_numbers[i];
-    //     unique_numbers[i] = unique_numbers[minIndex];
-    //     unique_numbers[minIndex] = temp;
     // }
 
     // // insertion sort
