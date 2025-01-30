@@ -26,76 +26,80 @@ using namespace std;
 //     }
 // }
 
-void merge(vector<long long int>& arr, int left,
-    int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
+// void merge(vector<long long int>& arr, int left,
+//     int mid, int right) {
+//     int n1 = mid - left + 1;
+//     int n2 = right - mid;
 
-    // Create temp vectors
-    vector<int> L(n1), R(n2);
+//     // Create temp vectors
+//     vector<int> L(n1), R(n2);
 
-    // Copy data to temp vectors L[] and R[]
-    for (int i = 0; i < n1; i++)
-        L[i] = arr[left + i];
-    for (int j = 0; j < n2; j++)
-        R[j] = arr[mid + 1 + j];
+//     // Copy data to temp vectors L[] and R[]
+//     for (int i = 0; i < n1; i++)
+//         L[i] = arr[left + i];
+//     for (int j = 0; j < n2; j++)
+//         R[j] = arr[mid + 1 + j];
 
-    int i = 0, j = 0;
-    int k = left;
+//     int i = 0, j = 0;
+//     int k = left;
 
-    // Merge the temp vectors back 
-    // into arr[left..right]
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            arr[k] = L[i];
-            i++;
-        }
-        else {
-            arr[k] = R[j];
-            j++;
-        }
-        k++;
-    }
+//     // Merge the temp vectors back 
+//     // into arr[left..right]
+//     while (i < n1 && j < n2) {
+//         if (L[i] <= R[j]) {
+//             arr[k] = L[i];
+//             i++;
+//         }
+//         else {
+//             arr[k] = R[j];
+//             j++;
+//         }
+//         k++;
+//     }
 
-    // Copy the remaining elements of L[], 
-    // if there are any
-    while (i < n1) {
-        arr[k] = L[i];
-        i++;
-        k++;
-    }
+//     // Copy the remaining elements of L[], 
+//     // if there are any
+//     while (i < n1) {
+//         arr[k] = L[i];
+//         i++;
+//         k++;
+//     }
 
-    // Copy the remaining elements of R[], 
-    // if there are any
-    while (j < n2) {
-        arr[k] = R[j];
-        j++;
-        k++;
-    }
-}
+//     // Copy the remaining elements of R[], 
+//     // if there are any
+//     while (j < n2) {
+//         arr[k] = R[j];
+//         j++;
+//         k++;
+//     }
+// }
 
-void mergeSort(vector<long long int>& arr, int left, int right) {
-    if (left >= right)
-        return;
+// void mergeSort(vector<long long int>& arr, int left, int right) {
+//     if (left >= right)
+//         return;
 
-    int mid = left + (right - left) / 2;
-    mergeSort(arr, left, mid);
-    mergeSort(arr, mid + 1, right);
-    merge(arr, left, mid, right);
-}
+//     int mid = left + (right - left) / 2;
+//     mergeSort(arr, left, mid);
+//     mergeSort(arr, mid + 1, right);
+//     merge(arr, left, mid, right);
+// }
 
 int main() {
+    // Create a random number generator
     std::random_device rd; // Obtain a random number from hardware
     std::mt19937 gen(rd()); // Seed the generator
     std::uniform_int_distribution<> distr(0, 1000000); // Define the range
 
+    // number of numbers to be sorted
     long long int n = 1000000;
 
+    // Generate random numbers
     std::vector<long long int> unique_numbers(n);
     for (long long int i = 0; i < n; i++) {
         unique_numbers[i] = distr(gen);
     }
 
+    // start the time clock
     auto start = std::chrono::high_resolution_clock::now(); // Start time
 
     // // bubble sort
@@ -152,17 +156,15 @@ int main() {
     // // quick sort
     // quickSort(unique_numbers, 0, n - 1);
 
-    // merge sort
-    mergeSort(unique_numbers, 0, n - 1);
+    // // merge sort
+    // mergeSort(unique_numbers, 0, n - 1);
 
+    // end the clock
     auto end = std::chrono::high_resolution_clock::now(); // End time
     std::chrono::duration<double> duration = end - start; // Calculate duration
 
+    // print the time taken
     std::cout << "Time taken for sorting: " << duration.count() << " seconds" << std::endl;
-
-    // for (int i = 0;i < n;i++) {
-    //     std::cout << unique_numbers[i] << std::endl;
-    // }
 
     return 0;
 }
