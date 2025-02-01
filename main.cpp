@@ -6,30 +6,89 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// <-------------------------------- functions for quick sort -------------------------------->
-int partition(vector<long long int>& vec, int low, int high) {
-    int pivot = vec[high];
-    int i = (low - 1);
-    for (int j = low; j <= high - 1; j++) {
-        if (vec[j] <= pivot) {
-            i++;
-            swap(vec[i], vec[j]);
+// ! <-------------------------------- function for rendering array -------------------------------->
+void renderArray(std::vector<long long int>& arr, sf::RenderWindow& window) {
+    window.clear();
+    for (size_t idx = 0; idx < arr.size(); idx++) {
+        sf::RectangleShape rectangle(sf::Vector2f(2, arr[idx]));
+        rectangle.setPosition(60 + idx * 2, window.getSize().y - arr[idx] - 40);
+        window.draw(rectangle);
+    }
+    window.display();
+}
+// ! <-------------------------------- function for rendering array -------------------------------->
+
+// ? <-------------------------------- functions for merge sort -------------------------------->
+void merge(std::vector<long long int>& arr, int left, int mid, int right, sf::Sound& sound, sf::RenderWindow& window) {
+    if (window.isOpen() == false) {
+        return;
+    }
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    std::vector<long long int> L(n1), R(n2);
+
+    for (int i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+    for (int i = 0; i < n2; i++)
+        R[i] = arr[mid + 1 + i];
+
+    int i = 0, j = 0, k = left;
+
+    sf::Event event;
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::KeyPressed) { // key events
+            if (event.key.code == sf::Keyboard::Escape) { // close the window
+                window.close();
+                break;
+            }
         }
     }
-    swap(vec[i + 1], vec[high]);
-    return (i + 1);
-}
 
-void quickSort(vector< long long int>& vec, int low, int high) {
-    if (low < high) {
-        int pi = partition(vec, low, high);
-        quickSort(vec, low, pi - 1);
-        quickSort(vec, pi + 1, high);
+    while (i < n1 && j < n2) {
+        if (L[i] <= R[j]) {
+            arr[k] = L[i];
+            i++;
+        }
+        else {
+            arr[k] = R[j];
+            j++;
+        }
+        k++;
+
+        renderArray(arr, window);
+    }
+
+    while (i < n1) {
+        arr[k] = L[i];
+        i++;
+        k++;
+        renderArray(arr, window);
+    }
+
+    while (j < n2) {
+        arr[k] = R[j];
+        j++;
+        k++;
+        renderArray(arr, window);
     }
 }
-// <-------------------------------- functions for quick sort -------------------------------->
+
+void mergeSort(std::vector<long long int>& arr, int left, int right, sf::Sound& sound, sf::RenderWindow& window) {
+    if (window.isOpen() == false) {
+        return;
+    }
+    if (left >= right)
+        return;
+    int mid = left + (right - left) / 2;
+    mergeSort(arr, left, mid, sound, window);
+    mergeSort(arr, mid + 1, right, sound, window);
+    merge(arr, left, mid, right, sound, window);
+}
+// ? <-------------------------------- functions for merge sort -------------------------------->
 
 int main() {
+    // ! <------------------------------------------ random number generator ----------------------------------------->
     // Create a random number generator
     std::random_device rd; // Obtain a random number from hardware
     std::mt19937 gen(rd()); // Seed the generator
@@ -43,16 +102,20 @@ int main() {
     for (long long int i = 0; i < n; i++) {
         unique_numbers[i] = distr(gen);
     }
+    // ! <------------------------------------------ random number generator ----------------------------------------->
 
+    // ? <------------------------------------------ sound ----------------------------------------->
     // Load sound
     sf::SoundBuffer buffer;
     if (!buffer.loadFromFile("step.wav")) {
         return -1; // error
     }
+
     sf::Sound sound;
     sound.setBuffer(buffer);
+    // ? <------------------------------------------ sound ----------------------------------------->
 
-    // display window setup
+    // ! <---------------------------------------------- window settings ----------------------------------------->
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     sf::RenderWindow window(sf::VideoMode(1920, 1080), "Main menu", sf::Style::Fullscreen, settings);
@@ -60,12 +123,17 @@ int main() {
     window.clear(sf::Color::Black);
     window.display();
     sf::sleep(sf::milliseconds(1000));
+    // ! <---------------------------------------------- window settings ----------------------------------------->
 
     int count = n;
     int i = 0;
+    int once = 1;
+    int render = 0;
+
 
     while (window.isOpen()) {
         int current_num = 0;
+
         // ? <-------------------------------------------------------Event Listener----------------------------------------->
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -93,6 +161,7 @@ int main() {
         //     }
         //     count--;
         // }
+        // render = 1;
         // ! <-------------------------------------------------------bubble sort----------------------------------------->
 
         // ? <-------------------------------------------------------selection sort----------------------------------------->
@@ -107,54 +176,60 @@ int main() {
         //     int temp = unique_numbers[i];
         //     unique_numbers[i] = unique_numbers[minIndex];
         //     unique_numbers[minIndex] = temp;
+        //     current_num = minIndex;
         //     count--;
         //     sound.play(); // Play sound after each swap
         // }
+        // render = 1;
         // ? <-------------------------------------------------------selection sort----------------------------------------->
 
         // ! <-------------------------------------------------------insertion sort----------------------------------------->
-        if (count != 0) {
-            i = n - count;
-            int j = i;
-            while (j > 0 && unique_numbers[j] < unique_numbers[j - 1]) {
-                int temp = unique_numbers[j];
-                unique_numbers[j] = unique_numbers[j - 1];
-                unique_numbers[j - 1] = temp;
-                current_num = j - 1;
-                j--;
-            }
-            count--;
-            sound.play(); // Play sound after each swap
-        }
+        // if (count != 0) {
+        //     i = n - count;
+        //     int j = i;
+        //     while (j > 0 && unique_numbers[j] < unique_numbers[j - 1]) {
+        //         int temp = unique_numbers[j];
+        //         unique_numbers[j] = unique_numbers[j - 1];
+        //         unique_numbers[j - 1] = temp;
+        //         current_num = j - 1;
+        //         j--;
+        //     }
+        //     count--;
+        //     sound.play(); // Play sound after each swap
+        // }
+        // render = 1;
         // ! <-------------------------------------------------------insertion sort----------------------------------------->
 
-        // <-------------------------------------------------------Quick sort----------------------------------------->
-        // // quick sort
-        // quickSort(unique_numbers, 0, n - 1);
+        // ? <-------------------------------------------------------Quick sort----------------------------------------->
 
-        // if (0 < n - 1) {
-        //     int pi = partition(unique_numbers, 0, n - 1);
-        //     quickSort(unique_numbers, 0, pi - 1);
-        //     quickSort(unique_numbers, pi + 1, 0);
-        // }
-        // <-------------------------------------------------------Quick sort----------------------------------------->
+        // ? <-------------------------------------------------------Quick sort----------------------------------------->
+
+        // ! <------------------------------------------------------- merge sort ----------------------------------------->
+        if (once) {
+            mergeSort(unique_numbers, 0, unique_numbers.size() - 1, sound, window);
+            once = 0;
+        }
+        render = 1;
+        // ! <------------------------------------------------------- merge sort ----------------------------------------->
 
         // ? <---------------------------------------------drawing----------------------------------------->
         window.clear(sf::Color::Black);
 
         // draw the rectangles
-        for (long long int i = 0; i < n; i++) {
-            if (i == current_num) {
-                sf::RectangleShape rectangle(sf::Vector2f(2, unique_numbers[i]));
-                rectangle.setPosition(60 + i * 2, 1080 - unique_numbers[i] - 40);
-                rectangle.setFillColor(sf::Color::Red);
-                window.draw(rectangle);
-            }
-            else {
-                sf::RectangleShape rectangle(sf::Vector2f(2, unique_numbers[i]));
-                rectangle.setPosition(60 + i * 2, 1080 - unique_numbers[i] - 40);
-                rectangle.setFillColor(sf::Color::White);
-                window.draw(rectangle);
+        if (render) {
+            for (long long int i = 0; i < n; i++) {
+                if (i == current_num) {
+                    sf::RectangleShape rectangle(sf::Vector2f(2, unique_numbers[i]));
+                    rectangle.setPosition(60 + i * 2, 1080 - unique_numbers[i] - 40);
+                    rectangle.setFillColor(sf::Color::Red);
+                    window.draw(rectangle);
+                }
+                else {
+                    sf::RectangleShape rectangle(sf::Vector2f(2, unique_numbers[i]));
+                    rectangle.setPosition(60 + i * 2, 1080 - unique_numbers[i] - 40);
+                    rectangle.setFillColor(sf::Color::White);
+                    window.draw(rectangle);
+                }
             }
         }
         window.display();
