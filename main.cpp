@@ -6,26 +6,26 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// int partition(vector<long long int>& vec, int low, int high) {
-//     int pivot = vec[high];
-//     int i = (low - 1);
-//     for (int j = low; j <= high - 1; j++) {
-//         if (vec[j] <= pivot) {
-//             i++;
-//             swap(vec[i], vec[j]);
-//         }
-//     }
-//     swap(vec[i + 1], vec[high]);
-//     return (i + 1);
-// }
+int partition(vector<long long int>& vec, int low, int high) {
+    int pivot = vec[high];
+    int i = (low - 1);
+    for (int j = low; j <= high - 1; j++) {
+        if (vec[j] <= pivot) {
+            i++;
+            swap(vec[i], vec[j]);
+        }
+    }
+    swap(vec[i + 1], vec[high]);
+    return (i + 1);
+}
 
-// void quickSort(vector< long long int>& vec, int low, int high) {
-//     if (low < high) {
-//         int pi = partition(vec, low, high);
-//         quickSort(vec, low, pi - 1);
-//         quickSort(vec, pi + 1, high);
-//     }
-// }
+void quickSort(vector< long long int>& vec, int low, int high) {
+    if (low < high) {
+        int pi = partition(vec, low, high);
+        quickSort(vec, low, pi - 1);
+        quickSort(vec, pi + 1, high);
+    }
+}
 
 // void merge(vector<long long int>& arr, int left,
 //     int mid, int right) {
@@ -121,6 +121,7 @@ int main() {
     sf::sleep(sf::milliseconds(1000));
 
     while (window.isOpen()) {
+        int temp = 0;
         sf::Event event;
         while (window.pollEvent(event)) {
             if (event.type == sf::Event::Closed)
@@ -149,76 +150,80 @@ int main() {
         //     count--;
         // }
 
-        // selection sort
+        // // selection sort
+        // if (count != 0) {
+        //     // for (int i = 0;i < n; i++) {
+        //     i = n - count;
+        //     int minIndex = i;
+        //     for (int j = i + 1;j < n; j++) {
+        //         if (unique_numbers[j] < unique_numbers[minIndex]) {
+        //             minIndex = j;
+        //         }
+        //     }
+        //     int temp = unique_numbers[i];
+        //     unique_numbers[i] = unique_numbers[minIndex];
+        //     unique_numbers[minIndex] = temp;
+        //     // }
+        //     count--;
+        //     sound.play(); // Play sound after each swap
+        // }
+
+
+        // insertion sort
         if (count != 0) {
-            // for (int i = 0;i < n; i++) {
             i = n - count;
-            int minIndex = i;
-            for (int j = i + 1;j < n; j++) {
-                if (unique_numbers[j] < unique_numbers[minIndex]) {
-                    minIndex = j;
-                }
+            int j = i;
+            while (j > 0 && unique_numbers[j] < unique_numbers[j - 1]) {
+                int temp = unique_numbers[j];
+                unique_numbers[j] = unique_numbers[j - 1];
+                unique_numbers[j - 1] = temp;
+                temp = j - 1;
+                j--;
             }
-            int temp = unique_numbers[i];
-            unique_numbers[i] = unique_numbers[minIndex];
-            unique_numbers[minIndex] = temp;
-            // }
             count--;
             sound.play(); // Play sound after each swap
         }
 
+        // // quick sort
+        // quickSort(unique_numbers, 0, n - 1);
+
+        // if (0 < n - 1) {
+        //     int pi = partition(unique_numbers, 0, n - 1);
+        //     quickSort(unique_numbers, 0, pi - 1);
+        //     quickSort(unique_numbers, pi + 1, 0);
+        // }
+
+        // ? <---------------------------------------------drawing----------------------------------------->
         // draw the rectangles
         for (long long int i = 0; i < n; i++) {
-            sf::RectangleShape rectangle(sf::Vector2f(2, unique_numbers[i]));
-            rectangle.setPosition(60 + i * 2, 1080 - unique_numbers[i] - 40);
-            rectangle.setFillColor(sf::Color::Green);
-            window.draw(rectangle);
+            if (i == temp) {
+                sf::RectangleShape rectangle(sf::Vector2f(2, unique_numbers[i]));
+                rectangle.setPosition(60 + i * 2, 1080 - unique_numbers[i] - 40);
+                rectangle.setFillColor(sf::Color::Red);
+                window.draw(rectangle);
+            }
+            else {
+                sf::RectangleShape rectangle(sf::Vector2f(2, unique_numbers[i]));
+                rectangle.setPosition(60 + i * 2, 1080 - unique_numbers[i] - 40);
+                rectangle.setFillColor(sf::Color::White);
+                window.draw(rectangle);
+            }
         }
         window.display();
+        // ? <---------------------------------------------drawing----------------------------------------->
     }
 
-    // start the time clock
-    auto start = std::chrono::high_resolution_clock::now(); // Start time
+    // <-------------------------------------------------------clock----------------------------------------->
+    // // start the time clock
+    // auto start = std::chrono::high_resolution_clock::now(); // Start time
 
-    // // optimized bubble sort
-    // for (long long int i = 0;i < n; i++) {
-    //     bool isSwapped = false;
-    //     for (long long int j = 0;j < n - 1; j++) {
-    //         if (unique_numbers[j] > unique_numbers[j + 1]) {
-    //             long long int temp = unique_numbers[j];
-    //             unique_numbers[j] = unique_numbers[j + 1];
-    //             unique_numbers[j + 1] = temp;
-    //             isSwapped = true;
-    //         }
-    //         if (!isSwapped) {
-    //             break;
-    //         }
-    //     }
-    // }
+    // // end the clock
+    // auto end = std::chrono::high_resolution_clock::now(); // End time
+    // std::chrono::duration<double> duration = end - start; // Calculate duration
 
-    // // insertion sort
-    // for (int i = 1;i < n; i++) {
-    //     int j = i;
-    //     while (j > 0 && unique_numbers[j] < unique_numbers[j - 1]) {
-    //         int temp = unique_numbers[j];
-    //         unique_numbers[j] = unique_numbers[j - 1];
-    //         unique_numbers[j - 1] = temp;
-    //         j--;
-    //     }
-    // }
-
-    // // quick sort
-    // quickSort(unique_numbers, 0, n - 1);
-
-    // // merge sort
-    // mergeSort(unique_numbers, 0, n - 1);
-
-    // end the clock
-    auto end = std::chrono::high_resolution_clock::now(); // End time
-    std::chrono::duration<double> duration = end - start; // Calculate duration
-
-    // print the time taken
-    std::cout << "Time taken for sorting: " << duration.count() << " seconds" << std::endl;
+    // // print the time taken
+    // std::cout << "Time taken for sorting: " << duration.count() << " seconds" << std::endl;
+    // <-------------------------------------------------------clock------------------------------------------>
 
     // return 0;
 }
