@@ -13,8 +13,8 @@ Welcome to the **Sorting Animated** project! This project visualizes various sor
 ### Bubble Sort
 ![Bubble Sort](animations/bubble_sort.gif)
 
-### Selection Sort
-![Selection Sort](animations/selection_sort.gif)
+### Insertion Sort
+![Insertion Sort](animations/insertion_sort.gif)
 
 ## About
 This project aims to help you understand how different sorting algorithms work by providing visual representations of their processes.
