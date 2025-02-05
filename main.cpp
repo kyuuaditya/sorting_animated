@@ -92,10 +92,10 @@ int main() {
     // Create a random number generator
     std::random_device rd; // Obtain a random number from hardware
     std::mt19937 gen(rd()); // Seed the generator
-    std::uniform_int_distribution<> distr(0, 1000); // Define the range
+    std::uniform_int_distribution<> distr(0, 920); // Define the range
 
     // number of numbers to be sorted
-    long long int n = 900;
+    long long int n = 880;
 
     // Generate random numbers
     std::vector<long long int> unique_numbers(n);
@@ -118,7 +118,7 @@ int main() {
     // ! <---------------------------------------------- window settings ----------------------------------------->
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
-    sf::RenderWindow window(sf::VideoMode(1920, 1080), "Main menu", sf::Style::Fullscreen, settings);
+    sf::RenderWindow window(sf::VideoMode(1880, 1000), "Main menu", sf::Style::Default, settings);
 
     window.clear(sf::Color::Black);
     window.display();
@@ -129,6 +129,7 @@ int main() {
     int i = 0;
     int once = 1;
     int render = 0;
+    int pressed = 0;
 
 
     while (window.isOpen()) {
@@ -143,6 +144,9 @@ int main() {
                 if (event.key.code == sf::Keyboard::Escape) { // close the window
                     window.close();
                 }
+                if (event.key.code == sf::Keyboard::Space) { // pause the sorting
+                    pressed = 1;
+                }
             }
         }
         // ? <-------------------------------------------------------Event Listener----------------------------------------->
@@ -150,7 +154,7 @@ int main() {
         sf::sleep(sf::milliseconds(10)); // sleep for 10 milliseconds
 
         // ! <-------------------------------------------------------bubble sort----------------------------------------->
-        // if (count != 0) {
+        // if (count != 0 && pressed) {
         //     for (long long int j = 0;j < n - 1; j++) {
         //         if (unique_numbers[j] > unique_numbers[j + 1]) {
         //             long long int temp = unique_numbers[j];
@@ -165,7 +169,7 @@ int main() {
         // ! <-------------------------------------------------------bubble sort----------------------------------------->
 
         // ? <-------------------------------------------------------selection sort----------------------------------------->
-        // if (count != 0) {
+        // if (count != 0 && pressed) {
         //     i = n - count;
         //     int minIndex = i;
         //     for (int j = i + 1;j < n; j++) {
@@ -184,7 +188,7 @@ int main() {
         // ? <-------------------------------------------------------selection sort----------------------------------------->
 
         // ! <-------------------------------------------------------insertion sort----------------------------------------->
-        // if (count != 0) {
+        // if (count != 0 && pressed) {
         //     i = n - count;
         //     int j = i;
         //     while (j > 0 && unique_numbers[j] < unique_numbers[j - 1]) {
@@ -205,7 +209,7 @@ int main() {
         // ? <-------------------------------------------------------Quick sort----------------------------------------->
 
         // ! <------------------------------------------------------- merge sort ----------------------------------------->
-        if (once) {
+        if (once && pressed) {
             mergeSort(unique_numbers, 0, unique_numbers.size() - 1, sound, window);
             once = 0;
         }
@@ -220,13 +224,13 @@ int main() {
             for (long long int i = 0; i < n; i++) {
                 if (i == current_num) {
                     sf::RectangleShape rectangle(sf::Vector2f(2, unique_numbers[i]));
-                    rectangle.setPosition(60 + i * 2, 1080 - unique_numbers[i] - 40);
+                    rectangle.setPosition(60 + i * 2, 1000 - unique_numbers[i] - 40);
                     rectangle.setFillColor(sf::Color::Red);
                     window.draw(rectangle);
                 }
                 else {
                     sf::RectangleShape rectangle(sf::Vector2f(2, unique_numbers[i]));
-                    rectangle.setPosition(60 + i * 2, 1080 - unique_numbers[i] - 40);
+                    rectangle.setPosition(60 + i * 2, 1000 - unique_numbers[i] - 40);
                     rectangle.setFillColor(sf::Color::White);
                     window.draw(rectangle);
                 }
