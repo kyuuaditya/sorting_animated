@@ -4,14 +4,14 @@ Welcome to the **Sorting Animated** project! This project visualizes various sor
 
 ## Algorithms
 
+### Selection Sort
+![Selection Sort](animations/selection_sort.gif)
+
 ### Merge Sort
 ![Merge Sort](animations/merge_sort.gif)
 
 ### Bubble Sort
 ![Bubble Sort](animations/bubble_sort.gif)
-
-### Quick Sort
-![Quick Sort](animations/quick_sort.gif)
 
 ### Selection Sort
 ![Selection Sort](animations/selection_sort.gif)
